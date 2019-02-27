@@ -20,6 +20,12 @@
     <%= label_tag "url-text", "Image URL:" %><br>
     <%= form.text_field :url, class: "url-text", id:"url-text" %>
   </p>
+
+  <p>
+    <%= label_tag "url-tags", "Image Tags:" %><br>
+    <%= form.text_field :tag_list, class: "url-tags", id:"url-tags"%>
+  </p>
+
   <p>
     <%= form.submit %>
   </p>
