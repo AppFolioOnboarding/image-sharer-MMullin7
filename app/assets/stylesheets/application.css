@@ -17,3 +17,7 @@
 .url-text[type=text] {
   width: 100%;
 }
+
+.image-stored{
+  max-width: 400px;
+}

@@ -27,4 +27,18 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       assert_response :unprocessable_entity
     end
   end
+
+  test 'should render 3 images in the index page in descending order' do
+    Image.create!(url: 'https://www.example.com/test1.jpg', created_at: Time.zone.parse('2019-02-04'))
+    Image.create!(url: 'https://www.example.com/test2.jpg', created_at: Time.zone.parse('2019-02-02'))
+    Image.create!(url: 'https://www.example.com/test3.jpg', created_at: Time.zone.parse('2019-02-01'))
+
+    get images_url
+
+    assert_select 'img' do |images|
+      assert_equal images.first.attr('src'), 'https://www.example.com/test1.jpg'
+      assert_equal images[1].attr('src'), 'https://www.example.com/test2.jpg'
+      assert_equal images.last.attr('src'), 'https://www.example.com/test3.jpg'
+    end
+  end
 end
