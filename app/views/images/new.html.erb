@@ -1,0 +1,27 @@
+<div class='container'>
+<h1>Add New Image URL</h1>
+
+<%= form_with scope: :image, url: images_path,local: true do |form| %>
+
+  <% if @image.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@image.errors.count, "error") %> stopped this image from being saved:
+      </h2>
+      <ul>
+        <% @image.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= label_tag "url-text", "Image URL:" %><br>
+    <%= form.text_field :url, class: "url-text", id:"url-text" %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+</div>
