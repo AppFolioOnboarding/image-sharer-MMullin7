@@ -13,6 +13,7 @@
     <% @images.each do |image| %>
       <tr>
         <td><%= image_tag image.url, class: 'image-stored' %></td>
+        <td class="js-tag-list"><%= image.tag_list %></td>
       </tr>
     <% end %>
   </table>

@@ -17,4 +17,11 @@ class ArticleTest < ActiveSupport::TestCase
     image = Image.new(url: 'https://www.imageurl.com/test.jpg')
     assert_predicate image, :valid?
   end
+
+  test 'should be able to add tags to the image' do
+    image = Image.new(url: 'https://www.test.com/test.jpg')
+    image.tag_list.add('Tag', 'Tag2', 'Tag3')
+
+    assert_equal image.tag_list, %w[Tag Tag2 Tag3]
+  end
 end

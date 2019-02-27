@@ -7,10 +7,18 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should show image 1' do
+  test 'should show image' do
     Image.create!(url: 'https://www.example.com/test.jpg')
     get image_url(Image.last)
     assert_select 'img[src="https://www.example.com/test.jpg"]'
+    assert_select '.js-tag-list', ''
+  end
+
+  test 'should show image with tag-list' do
+    Image.create!(url: 'https://www.example.com/test.jpg', tag_list: %w[Test])
+    get image_url(Image.last)
+    assert_select 'img[src="https://www.example.com/test.jpg"]'
+    assert_select '.js-tag-list', 'Test'
   end
 
   test 'should create and succeed' do
@@ -31,14 +39,30 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   test 'should render 3 images in the index page in descending order' do
     Image.create!(url: 'https://www.example.com/test1.jpg', created_at: Time.zone.parse('2019-02-04'))
     Image.create!(url: 'https://www.example.com/test2.jpg', created_at: Time.zone.parse('2019-02-02'))
-    Image.create!(url: 'https://www.example.com/test3.jpg', created_at: Time.zone.parse('2019-02-01'))
+    Image.create!(url: 'https://www.example.com/test3.jpg',
+                  created_at: Time.zone.parse('2019-02-01'),
+                  tag_list: %w[Test])
 
     get images_url
 
     assert_select 'img' do |images|
-      assert_equal images.first.attr('src'), 'https://www.example.com/test1.jpg'
-      assert_equal images[1].attr('src'), 'https://www.example.com/test2.jpg'
-      assert_equal images.last.attr('src'), 'https://www.example.com/test3.jpg'
+      assert_equal 'https://www.example.com/test1.jpg', images.first.attr('src')
+      assert_equal 'https://www.example.com/test2.jpg', images[1].attr('src')
+      assert_equal 'https://www.example.com/test3.jpg', images.last.attr('src')
+    end
+  end
+
+  test 'index contains tag-list' do
+    Image.create!(url: 'https://www.example.com/test2.jpg', created_at: Time.zone.parse('2019-02-02'))
+    Image.create!(url: 'https://www.example.com/test3.jpg',
+                  created_at: Time.zone.parse('2019-02-01'),
+                  tag_list: %w[Test])
+
+    get images_url
+
+    assert_select '.js-tag-list' do |tag_lists|
+      assert_equal '', tag_lists.first.text
+      assert_equal 'Test', tag_lists.last.text
     end
   end
 end
