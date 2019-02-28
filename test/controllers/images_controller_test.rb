@@ -91,4 +91,21 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       assert_equal 'https://www.example.com/test3.jpg', images.last.attr('src')
     end
   end
+
+  test 'destroy record that exists' do
+    image = Image.create!(url: 'https://www.example.com/test2.jpg')
+
+    assert_difference('Image.count', -1) do
+      delete image_path(image)
+    end
+    assert_redirected_to images_path
+  end
+
+  test 'destroy record that does not exist' do
+    image = Image.create!(url: 'https://www.example.com/test2.jpg')
+    image.destroy
+
+    delete image_path(image)
+    assert_response :redirect
+  end
 end
