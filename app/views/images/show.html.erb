@@ -1,7 +1,10 @@
 <p>
   <%= image_tag @image.url %>
   <p class="js-tag-list">
-    <%= @image.tag_list %>
+      <% @image.tag_list.each_with_index do |tag, index| %>
+        <%= link_to tag, images_url(tag: tag) %>
+        <%= ',' unless index == @image.tag_list.length - 1 %>
+      <% end %>
   <p>
 </p>
 
