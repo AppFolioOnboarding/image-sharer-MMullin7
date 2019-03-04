@@ -4,11 +4,20 @@
   <%= link_to "Link A New Image Now!", new_image_path, class: 'btn btn-primary btn-large' %>
 
   <hr>
+
+  <% if flash[:notice] %>
+    <div class="alert alert-danger" role="alert">
+      Could not delete the image!
+    </div>
+  <% end %>
+
   <h2>Images Currently Saved</h2>
 
   <table>
     <tr>
       <th>Image</th>
+      <th>Tags</th>
+      <th>Image/Action</th>
    </tr>
     <% @images.each do |image| %>
       <tr>
@@ -18,6 +27,10 @@
               <%= link_to tag, images_url(tag: tag) %>
               <%= ',' unless index == image.tag_list.length - 1 %>
             <% end %>
+        </td>
+        <td><%= button_to 'Destroy', image_url(image), class: "btn btn-danger",
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>

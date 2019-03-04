@@ -24,6 +24,16 @@ class ImagesController < ApplicationController
     end
   end
 
+  def destroy
+    image = Image.find_by(id: params[:id])
+    if image
+      image.destroy
+    else
+      flash[:notice] = 'Image Could Not Be Deleted!'
+    end
+    redirect_to images_path
+  end
+
   private
 
   def image_params
