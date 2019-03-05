@@ -1,0 +1,16 @@
+{
+  "parser": "babel-eslint",
+  "extends": "appfolio-react",
+  "rules": {
+    "function-paren-newline": 0,
+    "no-return-assign": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {}
+    }
+  },
+  "env": {
+    "mocha": true
+  }
+}
