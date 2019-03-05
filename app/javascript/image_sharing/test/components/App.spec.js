@@ -9,13 +9,14 @@ import App from '../../components/App';
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import FeedbackStore from '../../stores/FeedbackStore';
 
 
 configure({ adapter: new Adapter() });
 
 describe('App.js', () => {
   it('should render correctly', () => {
-    const wrapper = shallow(<App.wrappedComponent />);
+    const wrapper = shallow(<App store={new FeedbackStore()} />);
 
     expect(wrapper.find(Header)).to.have.lengthOf(1);
     expect(wrapper.find(Header).prop('title')).to.equal('Tell us what you think');
