@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { inject } from 'mobx-react';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
 import Header from './Header';
 import Footer from './Footer';
@@ -27,6 +26,4 @@ class App extends Component {
   }
 }
 
-export default inject(
-  'stores'
-)(App);
+export default App;
