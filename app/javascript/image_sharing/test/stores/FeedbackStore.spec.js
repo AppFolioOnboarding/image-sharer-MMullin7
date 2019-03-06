@@ -23,7 +23,7 @@ describe('FeedbackStore.js', () => {
     feedbackStore.updateComment('Comment Test');
     feedbackStore.updateUsername('User Test');
 
-    const stub = sinon.stub(helper, 'post');
+    const stub = sinon.stub(helper, 'post').resolves();
 
     feedbackStore.postFeedbackData();
     expect(stub.calledOnce).to.equal(true);
@@ -37,5 +37,6 @@ describe('FeedbackStore.js', () => {
   it('should have default values', () => {
     expect(feedbackStore.comments).to.equal('');
     expect(feedbackStore.userName).to.equal('');
+    expect(feedbackStore.flashMessage).to.equal(null);
   });
 });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { FormGroup, Label, Input, Button, Form } from 'reactstrap';
+import { FormGroup, Label, Input, Button, Form, Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
 import Header from './Header';
 import Footer from './Footer';
@@ -11,11 +11,21 @@ class App extends Component {
     {
       userName: PropTypes.string,
       comments: PropTypes.string,
+      flashMessage: PropTypes.shape(
+        {
+          message: PropTypes.string,
+          color: PropTypes.string
+        }
+      ),
+
+      postFeedbackData: PropTypes.func,
+      updateFlash: PropTypes.func,
       updateComment: PropTypes.func,
       updateUsername: PropTypes.func
     }) };
 
   handleSubmit = () => {
+    this.props.store.postFeedbackData();
   }
 
   updateCommentsValue = (event) => {
@@ -30,6 +40,13 @@ class App extends Component {
     return (
       <Form className="container">
         <Header title="Tell us what you think" />
+        {
+        this.props.store.flashMessage &&
+        <Alert color={this.props.store.flashMessage.color}>
+          {this.props.store.flashMessage.message}
+        </Alert>
+        }
+
         <FormGroup>
           <Label for="name">Your name:</Label>
           <Input

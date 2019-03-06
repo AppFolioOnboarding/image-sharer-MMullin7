@@ -2,14 +2,15 @@
 import 'jsdom-global/register';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16/build/index';
+import sinon from 'sinon';
 import { configure, shallow } from 'enzyme';
 import { expect } from 'chai';
-import { FormGroup, Label, Input, Button } from 'reactstrap';
+import { FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import App from '../../components/App';
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import FeedbackStore from '../../stores/FeedbackStore';
+import FeedbackStore, { FlashMessage } from '../../stores/FeedbackStore';
 
 
 configure({ adapter: new Adapter() });
@@ -40,5 +41,28 @@ describe('App.js', () => {
     expect(wrapper.find(Button)).to.have.lengthOf(1);
     expect(wrapper.find(Button).childAt(0).text()).to.equal('Submit');
     expect(wrapper.find(Footer)).to.have.lengthOf(1);
+
+    expect(wrapper.find(Alert)).to.have.lengthOf(0);
+  });
+
+  it('should show alert when flash message exists', () => {
+    const feedbackStore = new FeedbackStore();
+    feedbackStore.flashMessage = new FlashMessage('test message', 'danger');
+
+    const wrapper = shallow(<App store={feedbackStore} />);
+    expect(wrapper.find(Alert)).to.have.lengthOf(1);
+    expect(wrapper.find(Alert).childAt(0).text()).to.equal('test message');
+    expect(wrapper.find(Alert).prop('color')).to.equal('danger');
+  });
+
+  describe('handleSubmit', () => {
+    it('should call postFeedbackData()', () => {
+      const store = new FeedbackStore();
+      const wrapper = shallow(<App store={store} />);
+      const spy = sinon.spy(store, 'postFeedbackData');
+      wrapper.instance().handleSubmit();
+
+      expect(spy.calledOnce).to.equal(true);
+    });
   });
 });
