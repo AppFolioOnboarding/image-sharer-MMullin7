@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import 'whatwg-fetch';
 
 const HEADERS = {
