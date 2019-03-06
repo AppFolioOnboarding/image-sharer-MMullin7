@@ -1,15 +1,24 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
+import { post } from '../utils/helper';
 
 class FeedbackStore {
   @observable userName = '';
   @observable comments = '';
 
-  updateComment(comment) {
+  @action updateComment(comment) {
     this.comments = comment;
   }
 
-  updateUsername(name) {
+  @action updateUsername(name) {
     this.userName = name;
+  }
+
+  @action postFeedbackData() {
+    const path = '/api/feedbacks';
+    post(path, {
+      userName: this.userName,
+      comments: this.comments
+    });
   }
 }
 
